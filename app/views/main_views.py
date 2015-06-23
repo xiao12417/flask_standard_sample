@@ -10,7 +10,6 @@ from app import app
 from app.dbs import main_dbs
 from app.others.tasks import count_to_10000
 
-
 @app.route('/', methods=['GET'])
 def index_page():
     #async task
@@ -26,3 +25,8 @@ def page_not_found(error):
 @app.errorhandler(502)
 def server_502_error(error):
     return '502'
+
+
+@app.route('/not_allow', methods=['GET'])
+def deny(error):
+    return 'You IP address is not in white list...'
