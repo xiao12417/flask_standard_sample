@@ -2,7 +2,7 @@
 '''
 Created on 2014年7月19日
 一个flask 的sample
-@contact: http://50vip.com
+@contact: http://www.atool.org
 '''
 
 

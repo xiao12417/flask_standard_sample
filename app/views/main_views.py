@@ -8,12 +8,12 @@ import flask
 
 from app import app
 from app.dbs import main_dbs
-from app.others.tasks import count_to_10000
+from app.others import tasks
 
 @app.route('/', methods=['GET'])
 def index_page():
     #async task
-    count_to_10000()
+    tasks.count_to_10000()
     #此处应该渲染首页模版
     return flask.jsonify(main_dbs.get_user_by_id('hzwangzhiwei'))
 

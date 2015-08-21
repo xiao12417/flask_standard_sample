@@ -1,9 +1,9 @@
 #coding=utf-8
 '''
 Created on 2015年6月16日
-main模块涉及的数据库操作，可以是mysql，也可以是mongodb
+main模块涉及的数据库操作
+可以是mysql，也可以是mongodb
 使用什么数据库，什么orm均不限制
-建议不要使用重度orm框架，高成本且无益
 @author: hzwangzhiwei
 '''
 
