@@ -10,10 +10,11 @@ app = Flask(__name__)
 app.secret_key = 'your_session_key_ab_test'
 
 from app.views import main_views
+from app.views import test_views
 
 db_config = {
     'DB_USER': 'dev',
-    'DB_PSW': 'dev1',
+    'DB_PSW': 'dev',
     'DB_NAME': 'ab_test',
     'DB_HOST': '10.246.14.121',
     'DB_PORT': 3306,

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+    	<input type="number" value="895745892" id="appid" />
+    	<button onclick="javascript:p();">拉App信息</button>
+    	<pre id="json_data">
+    		
+    	</pre>
+    	<script src="//cdn.bootcss.com/jquery/1.9.0/jquery.min.js"></script>
+    	<script type="text/javascript">
+    		function p() {
+    			$.post('/app_info', {'appid': $('#appid').val()}, function(data) {
+        			console.log(data);
+        			$('#json_data').text(JSON.stringify(data, null, "\t"));
+        		});
+    		}
+    	</script>
+    </body>
+</html>
