@@ -31,7 +31,7 @@ def check_connect(f):
     return decorated_function
         
 @singleton
-class DB:
+class Mqsql:
     #对象属性
     #连接
     conn = None
@@ -165,12 +165,12 @@ if __name__ == '__main__':
     for i in xrange(10):
         sql = "insert into abtest_users(user_type) values(%s)"
         params = (str(i), )
-        print DB().exec_insert(sql, params)
+        print Mqsql().exec_insert(sql, params)
     sql = "update abtest_users set user_type = 5 where user_id <= 5"
     params = () 
-    print DB().exec_update(sql, params)
+    print Mqsql().exec_update(sql, params)
     
     sql = "select * from abtest_users where user_id <= 5"
     params = ()
-    print DB().exec_select(sql, params)
-    print DB().exec_select_one(sql, params)
+    print Mqsql().exec_select(sql, params)
+    print Mqsql().exec_select_one(sql, params)
