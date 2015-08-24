@@ -1,7 +1,8 @@
 #coding=utf-8
 '''
 Created on 2015年8月21日
-
+Mongo db 操作类
+TODO Test
 @author: hzwangzhiwei
 '''
 
@@ -63,7 +64,7 @@ class Mongo:
             result_set = self.db[table].find(params).sort(sort)
             return result_set
         except Exception, e:
-            print("MongoDB Error %s: %s" % (host, e.args[1]))
+            print("MongoDB Error %s" % e)
             return False
         
     @check_connect
@@ -75,7 +76,7 @@ class Mongo:
             result_set = self.db[table].find(params)
             return result_set
         except Exception, e:
-            print("MongoDB Error %s: %s" % (host, e.args[1]))
+            print("MongoDB Error %s" % e)
             return False
 
     @check_connect
@@ -87,7 +88,7 @@ class Mongo:
             r = self.db[table].insert(params)  
             return r
         except Exception, e:
-            print("MongoDB Error %s: %s" % (host, e.args[1]))
+            print("MongoDB Error %s" % e)
             return False
 
     @check_connect
@@ -96,22 +97,22 @@ class Mongo:
         ps:执行更新类sql语句
         '''
         try:
-             r = self.db[table].update(params)
-             return r
+            r = self.db[table].update(params)
+            return r
         except Exception, e:
-            print("MongoDB Error %s: %s" % (host, e.args[1]))
+            print("MongoDB Error %s" % e)
             return False
     
-     @check_connect
+    @check_connect
     def exec_count(self, table, params):
         '''
         ps:执行更新类sql语句
         '''
         try:
-             r = self.db[table].count(params)
-             return r
+            r = self.db[table].count(params)
+            return r
         except Exception, e:
-            print("MongoDB Error %s: %s" % (host, e.args[1]))
+            print("MongoDB Error %s" % e)
             return False
 
     

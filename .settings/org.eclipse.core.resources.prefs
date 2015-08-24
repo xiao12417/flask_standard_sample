@@ -1,6 +1,7 @@
 eclipse.preferences.version=1
 encoding//app/__init__.py=utf-8
-encoding//app/dbs/DB.py=utf-8
+encoding//app/dbs/Mongo.py=utf-8
+encoding//app/dbs/Mysql.py=utf-8
 encoding//app/dbs/__init__.py=utf-8
 encoding//app/dbs/main_dbs.py=utf-8
 encoding//app/lib/pyquery/pyquery.py=utf-8
