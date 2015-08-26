@@ -8,10 +8,13 @@ import os
 import sys
 
 def upload_dir():
-    '''
-    游戏logo目录
-    '''
     return _cur_file_dir() + '/app/static/upload/'
+
+def log_dir():
+    return _cur_file_dir() + '/log/'
+
+def default_tmp_dir():
+    return _cur_file_dir() + '/app/static/tmp/'
 
 def _cur_file_dir():
     #获取脚本路径

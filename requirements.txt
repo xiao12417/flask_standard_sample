@@ -1,4 +1,9 @@
 Flask
+cssselect
+lxml
 requests
 redis
 MySQLdb
+pyyaml
+ua-parser
+user-agents
