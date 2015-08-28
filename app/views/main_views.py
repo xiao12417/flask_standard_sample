@@ -4,18 +4,21 @@ Created on 2015年6月16日
 
 @author: hzwangzhiwei
 '''
-import flask
-
 from app import app
-from app.dbs import main_dbs
+from app.dbs import test_dbs
 from app.others import tasks
+from app.utils import OtherUtil
 
 @app.route('/', methods=['GET'])
 def index_page():
     #async task
     tasks.count_to_10000()
     #此处应该渲染首页模版
-    return flask.jsonify(main_dbs.get_user_by_id('hzwangzhiwei'))
+    try:
+        rst = test_dbs.get_test_by_id('1')
+    except:
+        rst = {}
+    return OtherUtil.object_2_dict(rst)
 
 #定义404页面
 @app.errorhandler(404)

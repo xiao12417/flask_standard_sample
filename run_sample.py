@@ -8,5 +8,5 @@ Created on 2014年7月19日
 
 from app import app
 if __name__ == '__main__':
-    app.run('0.0.0.0', 9527, debug = True,  threaded = True)
+    app.run('0.0.0.0', 7259, debug = True,  threaded = True)
 

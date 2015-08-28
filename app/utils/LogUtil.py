@@ -4,14 +4,14 @@ Created on 2015年8月24日
 
 @author: hzwangzhiwei
 '''
-from app.utils import DateUtil, Path
+from app.utils import PathUtil, DateUtil
 
 def append_log(log_file, data):
     '''
     append data to file pathing with filePath
     '''
     if data:
-        file_handler = open(Path.log_dir() + log_file, 'a')
+        file_handler = open(PathUtil.log_dir() + log_file, 'a')
         file_handler.write(data + '\n')
         file_handler.close()
         

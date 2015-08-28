@@ -16,8 +16,7 @@ def log_traceback(f):
         try:
             func = f(*args, **kwargs)
             return func
-        except Exception, e:
-            print e
+        except:
             #如果出现trace异常，发送到服务器
             trace = traceback.format_exc()
             print trace

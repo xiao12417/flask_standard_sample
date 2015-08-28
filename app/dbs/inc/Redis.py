@@ -8,44 +8,84 @@ Redis操作的库
 import redis
 from app import redis_config
 import time
+from app.utils import OtherUtil
+from app.dbs.inc.Mysql import Mysql
 
-class Redis:
-    connect = None
-    def __init__(self, host = redis_config['RD_HOST'], 
+class RedisMysqlCache(object):
+    '''
+    a redis cache for mysql
+    '''
+    def __init__(self, timeout = 60 * 60, # one hour 
+                        host = redis_config['RD_HOST'], 
                         port = redis_config['RD_PORT'],
                         password = redis_config['RD_PSW'], 
-                        db = redis_config['TEST_DB'], 
+                        db = redis_config['TEMP_DB'], 
                         charset = redis_config['RD_CHARSET']):
-        
-        self.connect = redis.StrictRedis(host = host, port = port, password = password, db = db, charset = charset)
-        print 'new redis connect to %s:%s %d' % (host, port, db)
-        
-    def set(self, key, value):
-        return self.connect.set(key, value)
-        
-    def delete(self, key):
-        return self.connect.delete(key)
-        
-    def get(self, key):
-        return self.connect.get(key)
-        
-    def keys(self):
-        return self.connect.keys()
+        self.__db = redis.Redis(host = host, port = port, password = password, db = db, charset = charset)
+        self.timeout = timeout
     
-    def dbsize(self):
-        return self.connect.dbsize()
+    def __cal_key(self, sql, params, t = "select"):
+        key = sql + t
+        for p in params:
+            key = key + str(p)
         
-    def flushdb(self):
-        return self.connect.flushdb()
+        key = OtherUtil.md5(key)
+        return key
     
-    def exists(self, key):
-        return self.connect.exists(key)
-    
-    #关闭，TODO
-    def close(self):
-        return True
-
-#############################
+    def select_one(self, sql, params):
+        '''
+        ps:从redis中获取数据，如果数据不存在，则从数据库取出来放到redis中
+        '''
+        key = self.__cal_key(sql, params, t = "select_one")
+        value = self.__db.get(key)
+        
+        expire = True
+        try:
+            value = eval(value)
+            if time.time() - value['timestamp'] <= self.timeout and value['data']:
+                #还没有过期
+                expire = False
+                rst = value['data']
+        except:
+            expire = True
+        
+        if expire:
+            #cache过期，则重新从数据库加载
+            rst = Mysql().exec_select_one(sql, params)
+            if rst:
+                #查询到结果，则缓存到redis
+                value = {'timestamp': time.time(), 'data': rst}
+                self.__db.set(key, value)
+        
+        return rst    
+        
+    def select(self, sql, params):
+        '''
+        ps:从redis中获取数据，如果数据不存在，则从数据库取出来放到redis中
+        '''
+        key = self.__cal_key(sql, params)
+        
+        value = self.__db.get(key)
+        
+        expire = True
+        try:
+            value = eval(value)
+            if time.time() - value['timestamp'] <= self.timeout:
+                #还没有过期
+                expire = False
+                rst = value['data']
+        except:
+            expire = True
+        
+        if expire:
+            #cache过期，则重新从数据库加载
+            rst = Mysql().exec_select(sql, params)
+            if rst:
+                #查询到结果，则缓存到redis
+                value = {'timestamp': time.time(), 'data': rst}
+                self.__db.set(key, value)
+        
+        return rst    
 
 class RedisQueue(object):  
     """Simple Queue with Redis Backend"""  
@@ -58,7 +98,7 @@ class RedisQueue(object):
                         charset = redis_config['RD_CHARSET']):
         
         """The default connection parameters are: host='localhost', port=6379, db=0"""  
-        self.__db= redis.Redis(host = host, port = port, password = password, db = db, charset = charset)  
+        self.__db = redis.Redis(host = host, port = port, password = password, db = db, charset = charset)  
         self.key = '%s:%s' %(namespace, name)  
   
     def qsize(self):  

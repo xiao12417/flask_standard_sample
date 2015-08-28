@@ -30,7 +30,6 @@ def get_request_ip(request):
 def get_request_method(request):
     return request.method
 
-
 def get_request_ua(request):
     return request.headers.get('User-Agent', '')
 
